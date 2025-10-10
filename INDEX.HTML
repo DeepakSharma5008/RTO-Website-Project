@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RTO Services Website Dynamic Hero</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://placehold.co/16x16/00AEEF/ffffff?text=R" type="image/x-icon" />
+    <meta name="keywords" content="Jaipur RTO Services, RTO WORKS SERVICES, Vehicle RC transfer, Vehicle NOC, DL services, Hypothecation removal, RTO agent, RTO consultant, Rajasthan RTO" />
+    <meta name="description" content="Get fast and reliable RTO services across Rajasthan. Expert assistance for RC Transfer, Duplicate RC, NOC, Hypothecation Removal, and Driving License." />
+    <meta name="csrf-token" content="STATIC_TOKEN">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Boxicons for icons -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom styles for Hero section background (RTO related) */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Slider Container and Slides */
+        .slider-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 1.5s ease-in-out;
+            /* Dark Overlay for text readability (CRITICAL) */
+            box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.75);
+            /* Important: Ensure only the active slide is visible initially */
+            z-index: 0; 
+        }
+        .slider-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Slide Navigation Buttons */
+        .slider-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20; /* Above the slides, below the content */
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        .slider-nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Content overlay positioning */
+        .hero-content-overlay {
+            position: relative;
+            z-index: 10; /* Above the slides */
+        }
+
+        /* Responsive Navbar Toggle */
+        .mobile-menu-open {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background-color: #1f2937;
+            z-index: 10;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-open a {
+            padding: 0.75rem 1.5rem;
+            color: #d1d5db;
+            transition: background-color 0.2s;
+        }
+
+        .mobile-menu-open a:hover {
+            background-color: #374151; 
+            color: white;
+        }
+
+        /* Popup Modal Styles */
+        .rto-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        /* Button Styling */
+        .rto-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .rto-btn-primary {
+            background-color: #3b82f6; /* Blue */
+            color: white;
+        }
+        .rto-btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        /* Floating WhatsApp Button Animation */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    
+    <!-- Header (Fixed Navigation Bar) -->
+    <header class="fixed top-0 w-full bg-white shadow-xl z-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="/" class="text-2xl font-extrabold text-blue-600 tracking-wider">RTO WORKS SERVICES</a>
+            
+            <!-- Desktop Navigation -->
+            <nav id="navbar-desktop" class="hidden md:flex space-x-6 items-center">
+                <a class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium" href="#home">Home</a>
+                <a class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium" href="#services-grid">Services</a>
+                <a class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium" href="#quote-form-section">Free Quote</a>
+                <a class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium" href="#detailed-services">Detailed Services</a>
+                
+                <!-- WhatsApp Icon Only (Icon-only button) -->
+                <a class="p-2 text-white bg-green-500 hover:bg-green-600 transition duration-300 rounded-full shadow-lg" href="https://wa.me/918740919795" target="_blank" aria-label="WhatsApp Chat">
+                    <i class="bx bxl-whatsapp text-xl"></i>
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-nav-toggle" class="md:hidden p-2 text-gray-700 focus:outline-none" aria-label="Toggle navigation">
+                <i class="bx bx-menu text-3xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation Menu (Hidden by default) -->
+        <div id="navbar-mobile" class="mobile-menu-open md:hidden">
+            <a href="#home">Home</a>
+            <a href="#services-grid">Services</a>
+            <a href="#detailed-services">Detailed Services</a>
+            <a class="mt-2 bg-green-600 text-white rounded-lg mx-4 text-center" href="https://wa.me/918740919795" target="_blank">
+                <i class="bx bxl-whatsapp text-lg align-middle mr-1"></i> WhatsApp Chat
+            </a>
+        </div>
+    </header>
+    
+    <main id="main">
+        
+        <!-- Hero Section (ID: home) - Image Slider -->
+        <section id="home" class="min-h-screen flex items-center justify-center p-4">
+            
+            <!-- Slides Container - Fixed image paths -->
+            <div id="slider-container" class="absolute inset-0">
+                <!-- Slide 1: Challan/Payment (images.jpg) -->
+                <div class="slider-slide active" data-index="0" style="background-image: url('challan_traffic.png');"></div>
+                <!-- Slide 2: Driving License Test (Untitled.jpg) -->
+                <div class="slider-slide" data-index="1" style="background-image: url('driving_test.png');"></div>
+                <!-- Slide 3: Vehicle Insurance (Untitled.png) -->
+                <div class="slider-slide" data-index="2" style="background-image: url('vehicle_insurance.png');"></div>
+                <!-- Slide 4: Permit/Fitness (7.jpg) -->
+                <div class="slider-slide" data-index="3" style="background-image: url('vehicle_inspection.png');"></div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button id="prevBtn" class="slider-nav-btn left-4 hidden md:block" aria-label="Previous Slide">
+                <i class="bx bx-chevron-left text-4xl"></i>
+            </button>
+            <button id="nextBtn" class="slider-nav-btn right-4 hidden md:block" aria-label="Next Slide">
+                <i class="bx bx-chevron-right text-4xl"></i>
+            </button>
+
+            <!-- Content Overlay -->
+            <div class="hero-content-overlay max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl sm:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-lg">
+                    ALL RAJASTHAN RTO WORK
+                </h1>
+                <h2 class="text-xl sm:text-3xl font-light mb-8 max-w-2xl mx-auto text-gray-200">
+                     RTO ऑफिस से झंझट-मुक्त, 100% भरोसेमंद RTO समाधान।
+                </h2>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button onclick="openPopup()" class="rto-btn bg-yellow-500 hover:bg-yellow-600 text-gray-900 shadow-xl">
+                        <i class="bx bx-chat align-middle mr-1"></i> विशेषज्ञ से सवाल पूछें
+                    </button>
+                    <a href="tel:+918740919795" class="rto-btn bg-green-500 hover:bg-green-600 text-white shadow-xl">
+                        <i class="bx bx-phone align-middle mr-1"></i> अभी कॉल करें: 8740919795
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Quick Grid Section (ID: services-grid) -->
+        <section id="services-grid" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">हमारी मुख्य RTO सेवाएँ एक नज़र में</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    
+                    <!-- RC Transfer -->
+                    <div class="p-6 text-center rounded-xl bg-blue-50 border-2 border-blue-200 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        <i class="bx bxs-car text-5xl text-blue-600 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">RC Transfer</h3>
+                        <p class="text-sm text-gray-500 mt-1">मालिकाना हक़ बदलना</p>
+                    </div>
+
+                    <!-- Duplicate RC -->
+                    <div class="p-6 text-center rounded-xl bg-yellow-50 border-2 border-yellow-200 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        <i class="bx bx-copy-alt text-5xl text-yellow-600 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">Duplicate RC</h3>
+                        <p class="text-sm text-gray-500 mt-1">गुम/खराब RC के लिए</p>
+                    </div>
+
+                    <!-- NOC -->
+                    <div class="p-6 text-center rounded-xl bg-red-50 border-2 border-red-200 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        <i class="bx bx-transfer text-5xl text-red-600 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">Vehicle NOC</h3>
+                        <p class="text-sm text-gray-500 mt-1">दूसरे राज्य के लिए</p>
+                    </div>
+
+                    <!-- HP Deletion -->
+                    <div class="p-6 text-center rounded-xl bg-green-50 border-2 border-green-200 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        <i class="bx bx-badge-check text-5xl text-green-600 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">HP Removal</h3>
+                        <p class="text-sm text-gray-500 mt-1">लोन समाप्त होने पर</p>
+                    </div>
+                    
+                     <!-- Driving License -->
+                    <div class="p-6 text-center rounded-xl bg-indigo-50 border-2 border-indigo-200 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        <i class="bx bxs-id-card text-5xl text-indigo-600 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">Driving License</h3>
+                        <p class="text-sm text-gray-500 mt-1">लर्निंग/परमानेंट/रिन्यूअल</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Services Explanation Section (ID: detailed-services) -->
+        <section id="detailed-services" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">हमारी RTO सेवाएँ: क्यों ज़रूरी हैं?</h2>
+                
+                <div class="space-y-10">
+                    
+                    <!-- RC Transfer Card -->
+                    <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg border-l-8 border-blue-500">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bx bxs-file-doc text-3xl mr-3 text-blue-500"></i> RC Transfer (मालिकाना हक़)
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            जब आप कोई वाहन खरीदते या बेचते हैं, तो **रजिस्ट्रेशन सर्टिफिकेट (RC) का समय पर और सही ट्रांसफर** कानूनी रूप से अनिवार्य है। यह प्रक्रिया सुनिश्चित करती है कि नए मालिक का विवरण आधिकारिक तौर पर दर्ज हो जाए, जिससे भविष्य में स्वामित्व और किसी भी देनदारी (liabilities) से संबंधित जटिलताओं से बचा जा सके।
+                        </p>
+                    </div>
+                    
+                    <!-- Duplicate RC Card -->
+                    <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg border-l-8 border-yellow-500">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bx bx-layer text-3xl mr-3 text-yellow-500"></i> Duplicate RC (नकली RC)
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            यदि आपकी **मूल RC खो गई है, चोरी हो गई है, या क्षतिग्रस्त** हो गई है, तो डुप्लीकेट RC प्राप्त करना महत्वपूर्ण हो जाता है। यह सुनिश्चित करता है कि वाहन मालिक के पास कानूनी स्वामित्व का प्रमाण बना रहे, जो विभिन्न लेनदेन और कानून प्रवर्तन के साथ बातचीत के लिए आवश्यक है।
+                        </p>
+                    </div>
+
+                    <!-- NOC Card -->
+                    <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg border-l-8 border-red-500">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bx bx-check-shield text-3xl mr-3 text-red-500"></i> No Objection Certificate (NOC)
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            **एक राज्य से दूसरे राज्य में जाते समय** या वाहन बेचने की योजना बनाते समय NOC प्राप्त करना अनिवार्य है। NOC प्रमाणित करता है कि वाहन से जुड़ी कोई लंबित देनदारी या कानूनी समस्या नहीं है, जिससे स्वामित्व का हस्तांतरण सुचारू रूप से होता है।
+                        </p>
+                    </div>
+                    
+                    <!-- HP Deletion Card -->
+                    <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg border-l-8 border-green-500">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bx bx-lock-open-alt text-3xl mr-3 text-green-500"></i> Hypothecation Removal (HP Deletion)
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            जब कोई वाहन **ऋण (loan) पर वित्तपोषित** होता है, तो RC में 'हाइपोथिकेशन' दर्ज होता है। एक बार ऋण चुकाने के बाद, वाहन का शीर्षक स्पष्ट करने के लिए इस हाइपोथिकेशन को समाप्त करना (HP Deletion) महत्वपूर्ण है। ऐसा न करने पर बिक्री या स्वामित्व के हस्तांतरण के दौरान जटिलताएँ आ सकती हैं।
+                        </p>
+                    </div>
+
+                    <!-- Driving License Card -->
+                    <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg border-l-8 border-indigo-500">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bx bxs-id-card text-3xl mr-3 text-indigo-500"></i> Driving License (DL)
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            नया DL बनवाना या **समय पर नवीनीकरण** कराना सड़क सुरक्षा और कानूनी अनुपालन के लिए आवश्यक है। यह सुनिश्चित करता है कि लाइसेंस धारक यातायात नियमों से अपडेटेड है, जो सभी के लिए सुरक्षित सड़कों में योगदान देता है।
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        
+        <!-- Free Quote Section (New Section) -->
+        <section id="quote-form-section" class="py-20 bg-blue-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-blue-600">
+                    <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-4">
+                        <i class="bx bx-receipt text-blue-600 mr-2"></i> Get A Free Quote (मुफ्त कोटेशन)
+                    </h2>
+                    <p class="text-center text-gray-600 mb-8">अपनी RTO सेवा आवश्यकताएँ दर्ज करें और तुरंत WhatsApp पर कोटेशन प्राप्त करें।</p>
+
+                    <form id="quote_form" onsubmit="handleQuoteSubmit(event)" class="space-y-6">
+                        <div>
+                            <label for="quote_name" class="block text-sm font-medium text-gray-700">Name *</label>
+                            <input type="text" id="quote_name" name="quote_name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1" placeholder="आपका पूरा नाम" required aria-label="आपका पूरा नाम">
+                        </div>
+                        <div>
+                            <label for="quote_mobile" class="block text-sm font-medium text-gray-700">Mobile (WhatsApp) *</label>
+                            <input type="tel" id="quote_mobile" name="quote_mobile" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1" placeholder="आपका 10 अंकों का WhatsApp नंबर" required aria-label="आपका 10 अंकों का WhatsApp नंबर">
+                        </div>
+                        <div>
+                            <label for="quote_subject" class="block text-sm font-medium text-gray-700">Required Service *</label>
+                            <input type="text" id="quote_subject" name="quote_subject" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1" placeholder="जैसे: RC Transfer, DL Renewal, NOC" required aria-label="आवश्यक सेवा">
+                        </div>
+                        <div>
+                            <label for="quote_message" class="block text-sm font-medium text-gray-700">Message / Details</label>
+                            <textarea id="quote_message" name="quote_message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1" placeholder="अपनी आवश्यकता विस्तार से बताएं। (जैसे: कार मॉडल, कहाँ से कहाँ ट्रांसफर करना है।)" required aria-label="आवश्यकता का विवरण"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full rto-btn bg-blue-600 hover:bg-blue-700 text-white text-lg shadow-xl py-3">
+                            <i class="bx bxl-whatsapp align-middle mr-2"></i> WhatsApp पर कोटेशन प्राप्त करें
+                        </button>
+                        <div id="quote-form-message" class="text-center mt-3 text-sm text-green-600 font-semibold" style="display:none;"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Popup (Modal) - Existing Modal logic for "सवाल पूछें" -->
+        <div id="rto-modal" class="rto-modal">
+            <div class="modal-content">
+                <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-900" onclick="closePopup()">
+                    <i class="bx bx-x text-3xl"></i>
+                </button>
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-600">विशेषज्ञों से पूछें!</h2>
+                    <p class="text-gray-500">हम 24 घंटे के भीतर जवाब देंगे।</p>
+                </div>
+                <form id="contact_form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div>
+                        <input type="text" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="आपका नाम" required aria-label="आपका नाम">
+                    </div>
+                    <div>
+                        <input type="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="आपका ईमेल" required aria-label="आपका ईमेल">
+                    </div>
+                    <div>
+                        <input type="tel" name="phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="फ़ोन नंबर (8740919795)" required aria-label="फ़ोन नंबर">
+                    </div>
+                    <div>
+                        <textarea name="question" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder='अपना सवाल यहाँ लिखें (जैसे: "RC ट्रांसफर में क्या दस्तावेज चाहिए?")' required aria-label="आपका सवाल"></textarea>
+                    </div>
+                    <button type="submit" class="w-full rto-btn rto-btn-primary shadow-md">
+                        सवाल पोस्ट करें
+                    </button>
+                    <div id="form-message" class="text-center mt-3 text-sm text-green-600" style="display:none;">आपका संदेश सफलतापूर्वक भेज दिया गया है!</div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Footer Section (ID: contact) -->
+    <footer id="contact" class="bg-gray-800 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <!-- Contact & Address -->
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold text-blue-400 mb-4">Address & Contact</h4>
+                    <h3 class="text-2xl font-bold mb-2">RTO WORKS SERVICES</h3>
+                    <address class="not-italic text-sm text-gray-300">
+                        109, Anukampa Complex, <br>
+                        Jhalana RTO Office, <br>
+                        Jaipur, Rajasthan - 302004 <br>
+                        India <br><br>
+                        <strong>Phone:</strong> <a href="tel:+918740919795" class="hover:text-white">+91 8740919795</a><br>
+                        <strong>Email:</strong> <a href="mailto:info@rtoworksservices.in" class="hover:text-white">info@rtoworksservices.in</a>
+                    </address>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold text-blue-400 mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> <a href="#home" class="hover:text-white transition">Home</a></li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> <a href="#services-grid" class="hover:text-white transition">Services</a></li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> <a href="#quote-form-section" class="hover:text-white transition">Free Quote</a></li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> <a href="#" class="hover:text-white transition">Privacy Policy (Example)</a></li>
+                    </ul>
+                </div>
+
+                <!-- RTO Services Links -->
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold text-blue-400 mb-4">RTO Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> Ownership Transfer</li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> Duplicate RC</li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> Hypothecation Deletion</li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> Driving License</li>
+                        <li><i class="bx bx-chevron-right mr-1 text-blue-400"></i> No Objection Certificate</li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div class="col-span-1">
+                    <h4 class="text-xl font-bold text-blue-400 mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 text-2xl">
+                        <a href="https://www.instagram.com/deepaksh0292" target="_blank" aria-label="Instagram" class="hover:text-pink-500 transition">
+                            <i class="bx bxl-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/918740919795" target="_blank" aria-label="WhatsApp" class="hover:text-green-500 transition">
+                            <i class="bx bxl-whatsapp"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/deepaksh0292" target="_blank" aria-label="LinkedIn (Example)" class="hover:text-blue-500 transition">
+                            <i class="bx bxl-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center border-t border-gray-700 pt-6">
+                <p class="text-sm text-gray-400">&copy; Copyright 2024 **RTO WORKS SERVICES**. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button (Bottom Right) -->
+    <a href="https://wa.me/918740919795" target="_blank" class="fixed bottom-6 right-6 p-4 bg-green-500 text-white rounded-full shadow-2xl hover:bg-green-600 transition duration-300 z-50 animate-pulse" aria-label="WhatsApp Chat">
+        <i class="bx bxl-whatsapp text-3xl"></i>
+    </a>
+
+    <script>
+        // --- JavaScript for Dynamic Hero Slider ---
+        const slides = document.querySelectorAll('.slider-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+            // Ensure index loops correctly
+            if (index >= slides.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = index;
+            }
+
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            // Show the current slide
+            slides[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function startSlider() {
+            // Set up automatic scroll every 6000ms (6 seconds)
+            slideInterval = setInterval(nextSlide, 6000);
+        }
+
+        function stopSlider() {
+            clearInterval(slideInterval);
+        }
+
+        // Event listeners for manual control
+        nextBtn.addEventListener('click', () => {
+            stopSlider(); // Stop automatic scroll temporarily on manual interaction
+            nextSlide();
+            startSlider(); // Restart timer
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopSlider();
+            prevSlide();
+            startSlider();
+        });
+        
+        // Start the slider when the script loads
+        showSlide(currentSlide);
+        startSlider();
+
+
+        // --- JavaScript for Mobile Navigation and Modal ---
+
+        // 1. Mobile Navigation Toggle
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const mobileNavMenu = document.getElementById('navbar-mobile');
+
+        mobileNavToggle.addEventListener('click', () => {
+            const isMenuOpen = mobileNavMenu.style.display === 'flex';
+            if (isMenuOpen) {
+                mobileNavMenu.style.display = 'none';
+                mobileNavToggle.innerHTML = '<i class="bx bx-menu text-3xl"></i>';
+            } else {
+                mobileNavMenu.style.display = 'flex';
+                mobileNavToggle.innerHTML = '<i class="bx bx-x text-3xl"></i>';
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileLinks = mobileNavMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavMenu.style.display = 'none';
+                mobileNavToggle.innerHTML = '<i class="bx bx-menu text-3xl"></i>';
+            });
+        });
+
+        // 2. Contact Form Modal Logic (Existing "सवाल पूछें" form)
+        const modal = document.getElementById('rto-modal');
+        const formMessage = document.getElementById('form-message');
+
+        function openPopup() {
+            modal.style.display = 'flex';
+            formMessage.style.display = 'none';
+        }
+
+        function closePopup() {
+            modal.style.display = 'none';
+            document.getElementById('contact_form').reset();
+        }
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closePopup();
+            }
+        });
+
+        // Form submission (Client-side mock for "सवाल पूछें")
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('contact_form');
+            const data = new FormData(form);
+            const name = data.get('name');
+
+            // Show success message
+            formMessage.textContent = `धन्यवाद, ${name}! आपका सवाल पोस्ट कर दिया गया है। हम जल्द ही आपसे संपर्क करेंगे।`;
+            formMessage.style.display = 'block';
+
+            // Reset form after a small delay and close the modal
+            setTimeout(() => {
+                closePopup();
+            }, 3000); 
+        }
+
+        // 3. Quote Form Submission Logic (New Function)
+        function handleQuoteSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('quote_form');
+            const data = new FormData(form);
+            const name = data.get('quote_name');
+            const mobile = data.get('quote_mobile');
+            const subject = data.get('quote_subject');
+            const message = data.get('quote_message');
+
+            // Compose the WhatsApp message
+            const whatsappNumber = '918740919795'; // Target number
+            let quoteText = `*नई कोटेशन पूछताछ (Free Quote)*\n\n`;
+            quoteText += `*नाम:* ${name}\n`;
+            quoteText += `*मोबाइल:* ${mobile}\n`;
+            quoteText += `*विषय (Service):* ${subject}\n`;
+            quoteText += `*संदेश/आवश्यकता:* ${message}\n\n`;
+            quoteText += `यह संदेश RTO WORKS SERVICES वेबसाइट के Free Quote फॉर्म से भेजा गया है।`;
+
+            // Encode the message for URL
+            const encodedMessage = encodeURIComponent(quoteText);
+            
+            // Construct the WhatsApp URL
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Open WhatsApp in a new tab
+            window.open(whatsappUrl, '_blank');
+
+            // Show a success message on the website
+            const quoteMessageDiv = document.getElementById('quote-form-message');
+            quoteMessageDiv.textContent = `आपकी कोटेशन पूछताछ WhatsApp पर तैयार है। कृपया भेजें!`;
+            quoteMessageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
